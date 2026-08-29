@@ -1,0 +1,11 @@
+= 2026-08-29 - initial release
+
+== Summary
+
+First shippable Notorious build: sticky catalog + notepad/canvas hybrid on dui/dew, with installer and CI.
+
+== Details
+
+* Notes stored under the OS app-data `Notorious/notes` folder as JSON.
+* Mode switch converts paragraphs to stacked canvas text; Undo restores prior snapshots.
+* Product Essentials Band A starters: About, Help, debug dump, Windows installer script, release workflow.

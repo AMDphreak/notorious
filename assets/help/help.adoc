@@ -1,0 +1,17 @@
+= Notorious Help
+
+== Shortcuts
+
+* Ctrl+C — copy as HTML (no sticky background)
+* Ctrl+Shift+C — copy as Markdown
+* Ctrl+Z / Ctrl+Y — undo / redo
+* Ctrl+S — save
+
+== Modes
+
+* *Text* — notepad-style body with font size and bold.
+* *Canvas* — converted text blocks on a colored surface (diagram tools come later). Undo reverses conversion until shapes are added.
+
+== Catalog
+
+List or grid view, search by title/body, per-note background colors.

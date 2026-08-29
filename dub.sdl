@@ -1,0 +1,37 @@
+name "notorious"
+description "Cross-platform sticky notes + notepad hybrid (D + dui/dew)"
+authors "amdphreak"
+copyright "Copyright © 2026, AMDphreak"
+license "BSL-1.0"
+version "0.1.0"
+
+dependency "dui" path="../../dlang-supplemental/dui"
+dependency "dew" path="../../dlang-supplemental/dew"
+dependency "tgc" version="~>0.1.1"
+
+targetType "executable"
+targetName "notorious"
+mainSourceFile "source/app.d"
+sourcePaths "source"
+importPaths "source"
+stringImportPaths "."
+
+configuration "application" {
+	targetType "executable"
+	mainSourceFile "source/app.d"
+	versions "DewHeadless"
+}
+
+configuration "windowed" {
+	targetType "executable"
+	mainSourceFile "source/app.d"
+	versions "NotoriousWindowed"
+	subConfiguration "dew" "gpu"
+	dependency "glfw-d" version="~>1.1.2"
+}
+
+configuration "unittest" {
+	targetType "executable"
+	mainSourceFile "source/app.d"
+	versions "DewHeadless" "NotoriousTest"
+}

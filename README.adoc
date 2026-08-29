@@ -1,0 +1,63 @@
+ifndef::env-github[:icons: font]
+:toc: preamble
+
+ifdef::env-github[]
+++++
+<a id="readme-top"></a>
+<div align="center">
+<a href="https://github.com/AMDphreak/notorious/graphs/contributors"><img src="https://img.shields.io/github/contributors/AMDphreak/notorious.svg?style=for-the-badge" alt="Contributors"></a>
+<a href="https://github.com/AMDphreak/notorious/network/members"><img src="https://img.shields.io/github/forks/AMDphreak/notorious.svg?style=for-the-badge" alt="Forks"></a>
+<a href="https://github.com/AMDphreak/notorious/stargazers"><img src="https://img.shields.io/github/stars/AMDphreak/notorious.svg?style=for-the-badge" alt="Stars"></a>
+<a href="https://github.com/AMDphreak/notorious/issues"><img src="https://img.shields.io/github/issues/AMDphreak/notorious.svg?style=for-the-badge" alt="Issues"></a>
+<a href="https://github.com/AMDphreak/notorious/blob/main/LICENSE"><img src="https://img.shields.io/github/license/AMDphreak/notorious.svg?style=for-the-badge" alt="License"></a>
+<br />
+<h3 align="center">Notorious</h3>
+<p align="center">
+Sticky notes meet Notepad — catalog, search, per-note colors, text↔canvas mode, Markdown/HTML clipboard.<br />
+Built with <a href="https://github.com/dlang-supplemental/dui">dui</a> / <a href="https://github.com/dlang-supplemental/dew">dew</a>.
+<br /><br />
+<a href="https://github.com/AMDphreak/notorious/releases"><strong>Download »</strong></a>
+·
+<a href="https://github.com/AMDphreak/notorious/issues/new?labels=bug">Report Bug</a>
+·
+<a href="https://github.com/AMDphreak/notorious/issues/new?labels=enhancement">Request Feature</a>
+</p>
+</div>
+++++
+endif::[]
+
+ifndef::env-github[]
+= Notorious
+
+Sticky notes meet Notepad on dui/dew.
+endif::[]
+
+== About
+
+Notorious is a cross-platform notes desktop app: a catalog (list / grid / search), sticky-colored note windows, notepad editing with fonts/bold/size, and a **Text ↔ Canvas** mode switch. Canvas conversion turns paragraphs into canvas text blocks and stays reversible (with Undo) until diagram shapes are added.
+
+Clipboard:
+
+* *Ctrl+C* — HTML fragment **without** the sticky background color
+* *Ctrl+Shift+C* — Markdown
+
+Defaults favor code-friendly files: UTF-8 and LF line endings.
+
+== Build
+
+[source,bash]
+----
+# Co-dev: sibling checkouts of dlang-supplemental/dew and dui
+dub build -c application --compiler=ldc2   # headless / SoftwareBackend smoke
+dub build -c windowed --compiler=ldc2      # GLFW + Vello UI (Windows/Linux)
+----
+
+Windows installer: see `installer/notorious.iss` (Inno Setup). The Start Menu shortcut is named **Notorious** so Start search for “note” finds it.
+
+== Changelog
+
+See link:CHANGELOG.adoc[CHANGELOG.adoc].
+
+== License
+
+BSL-1.0

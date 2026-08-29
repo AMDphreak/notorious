@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+          - os: ubuntu-latest
+          - os: macos-14
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout dew
+        uses: actions/checkout@v4
+        with:
+          repository: dlang-supplemental/dew
+          path: _deps/dew
+      - name: Checkout dui
+        uses: actions/checkout@v4
+        with:
+          repository: dlang-supplemental/dui
+          path: _deps/dui
+      - uses: dlang-community/setup-dlang@v1
+        with:
+          compiler: ldc-latest
+      - name: Test
+        run: >
+          dub test -c unittest --compiler=ldc2
+          --override-path dui=_deps/dui
+          --override-path dew=_deps/dew
+      - name: Build headless
+        run: >
+          dub build -c application --compiler=ldc2 --build=release
+          --override-path dui=_deps/dui
+          --override-path dew=_deps/dew
+      - name: Smoke
+        shell: bash
+        run: ./notorious --version || ./notorious.exe --version

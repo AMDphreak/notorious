@@ -1,0 +1,96 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            triplet: windows-x64
+          - os: ubuntu-latest
+            triplet: linux-x64
+          - os: macos-14
+            triplet: macos-arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: dlang-supplemental/dew
+          path: _deps/dew
+      - uses: actions/checkout@v4
+        with:
+          repository: dlang-supplemental/dui
+          path: _deps/dui
+      - uses: dlang-community/setup-dlang@v1
+        with:
+          compiler: ldc-latest
+      - name: Stamp version from tag
+        shell: bash
+        run: echo "${GITHUB_REF_NAME#v}" > VERSION
+      - name: Build release binary
+        run: >
+          dub build -c application --compiler=ldc2 --build=release
+          --override-path dui=_deps/dui
+          --override-path dew=_deps/dew
+      - name: Stage slice
+        shell: bash
+        run: |
+          mkdir -p "out/${{ matrix.triplet }}"
+          if [ -f notorious.exe ]; then
+            cp notorious.exe "out/${{ matrix.triplet }}/notorious.exe"
+            cp notorious.exe "out/${{ matrix.triplet }}/app.exe"
+          else
+            cp notorious "out/${{ matrix.triplet }}/notorious"
+            cp notorious "out/${{ matrix.triplet }}/app"
+            chmod +x "out/${{ matrix.triplet }}/app" "out/${{ matrix.triplet }}/notorious"
+          fi
+          cp LICENSE README.adoc "out/${{ matrix.triplet }}/" || true
+      - name: Windows installer (Inno)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          choco install innosetup -y --no-progress
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" installer\notorious.iss
+          if (Test-Path dist) {
+            New-Item -ItemType Directory -Force -Path "out\${{ matrix.triplet }}" | Out-Null
+            Copy-Item dist\* "out\${{ matrix.triplet }}\"
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: notorious-${{ matrix.triplet }}
+          path: out/${{ matrix.triplet }}/**
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Pack archives
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-files
+          for d in artifacts/notorious-*; do
+            trip=${d##*notorious-}
+            (cd "$d" && zip -r "../../release-files/notorious-${trip}.zip" .)
+          done
+          ls -la release-files
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: release-files/*
+          generate_release_notes: true
+          name: Notorious ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
