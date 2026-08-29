@@ -18,16 +18,21 @@ jobs:
           - os: macos-14
             triplet: macos-arm64
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: github.com/AMDphreak/notorious
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: github.com/AMDphreak/notorious
       - uses: actions/checkout@v4
         with:
           repository: dlang-supplemental/dew
-          path: _deps/dew
+          path: github.com/dlang-supplemental/dew
       - uses: actions/checkout@v4
         with:
           repository: dlang-supplemental/dui
-          path: _deps/dui
+          path: github.com/dlang-supplemental/dui
       - uses: dlang-community/setup-dlang@v1
         with:
           compiler: ldc-latest
@@ -35,10 +40,7 @@ jobs:
         shell: bash
         run: echo "${GITHUB_REF_NAME#v}" > VERSION
       - name: Build release binary
-        run: >
-          dub build -c application --compiler=ldc2 --build=release
-          --override-path dui=_deps/dui
-          --override-path dew=_deps/dew
+        run: dub build -c application --compiler=ldc2 --build=release
       - name: Stage slice
         shell: bash
         run: |
@@ -65,7 +67,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: notorious-${{ matrix.triplet }}
-          path: out/${{ matrix.triplet }}/**
+          path: github.com/AMDphreak/notorious/out/${{ matrix.triplet }}/**
 
   release:
     needs: build
