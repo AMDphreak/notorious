@@ -33,6 +33,10 @@ jobs:
         with:
           repository: dlang-supplemental/dui
           path: github.com/dlang-supplemental/dui
+      - uses: actions/checkout@v4
+        with:
+          repository: dlang-supplemental/vello-d
+          path: github.com/dlang-supplemental/vello-d
       - uses: dlang-community/setup-dlang@v1
         with:
           compiler: ldc-latest
