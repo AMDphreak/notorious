@@ -1,6 +1,8 @@
 = changelog
 
-== 2026-08-29 - Initial Notorious 0.1.0
+== 2026-08-29 - Release target pattern desktop/2026
+
+* Release matrix includes `windows-arm64` and `linux-arm64` (house `desktop` pattern) alongside existing x64 + macOS arm64.
 
 * Catalog with list/grid views and search; per-note sticky background colors.
 * Text ↔ Canvas mode with Undo/Redo; reverse locked once diagram shapes exist.
