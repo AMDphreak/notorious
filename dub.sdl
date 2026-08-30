@@ -30,17 +30,17 @@ configuration "windowed" {
 	dependency "glfw-d" version="~>1.1.2"
 	# Direct dep so vello-d's lflags/libs (vello_bridge staticlib) apply to this exe link.
 	dependency "vello-d" path="../../dlang-supplemental/vello-d"
-	# Explicit bridge path — transitive $PACKAGE_DIR lflags have not reliably reached the final link.
+	# Explicit bridge path via $PACKAGE_DIR (absolute). Relative paths break when
+	# the linker runs from DUB's cache build directory.
 	platform "windows" {
 		lflags "/SUBSYSTEM:WINDOWS"
-		lflags "/LIBPATH:../../dlang-supplemental/vello-d/vello_bridge/target/release"
-		# Pass the staticlib as a linker input (not only -l) so MSVC actually consumes it.
-		lflags "../../dlang-supplemental/vello-d/vello_bridge/target/release/vello_bridge.lib"
+		lflags "/LIBPATH:$PACKAGE_DIR/../../dlang-supplemental/vello-d/vello_bridge/target/release"
+		lflags "$PACKAGE_DIR/../../dlang-supplemental/vello-d/vello_bridge/target/release/vello_bridge.lib"
 		libs "advapi32" "userenv" "ws2_32" "bcrypt" "ntdll" "kernel32" "shell32" "ole32"
 	}
 	platform "posix" {
-		lflags "-L../../dlang-supplemental/vello-d/vello_bridge/target/release"
-		lflags "../../dlang-supplemental/vello-d/vello_bridge/target/release/libvello_bridge.a"
+		lflags "-L$PACKAGE_DIR/../../dlang-supplemental/vello-d/vello_bridge/target/release"
+		lflags "$PACKAGE_DIR/../../dlang-supplemental/vello-d/vello_bridge/target/release/libvello_bridge.a"
 		libs "pthread" "dl" "m"
 	}
 }
