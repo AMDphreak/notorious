@@ -1,0 +1,11 @@
+= 2026-08-30 - Copy as formats
+
+== Summary
+
+Replace one-shot Markdown clipboard with a multi-format Copy-as modal backed by an in-tree format registry.
+
+== Details
+
+* Adapters: plaintext, markdown, centrmark, rst, asciidoc, html, richtext.
+* Policy: compiled first-party modules only; third-party binaries/interpreters stay out of process.
+* Source view + navigator stubs prepare for preview/compare and future canvas codebox overlays without loading them at startup beyond the registry table.

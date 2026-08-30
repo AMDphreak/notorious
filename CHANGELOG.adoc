@@ -1,5 +1,12 @@
 = changelog
 
+== 2026-08-30 - Copy as… format registry
+
+* Ctrl+Shift+C / **Copy as…** opens a format picker (plain, Markdown, CentrMark, RST, AsciiDoc, HTML, RTF).
+* First-party D format modules under `source/notorious/formats/` — no in-app extension store.
+* “Open as code” + side navigator/compare/preview stubs for source editing.
+* Details: link:changelog-details/2026-08-30 - copy-as-formats.adoc[2026-08-30 - Copy as formats]
+
 == 2026-08-29 - Win+R aliases (noto / notor / notorious)
 
 * Installer registers App Paths for `noto`, `notor`, and `notorious` (optional task, on by default) so Win+R launches the app without PATH changes.

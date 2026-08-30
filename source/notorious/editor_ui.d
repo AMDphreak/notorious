@@ -8,12 +8,15 @@ import notorious.model;
 import notorious.store;
 import notorious.markdown;
 import notorious.html_export;
+import notorious.formats;
+import notorious.copy_as;
 
 struct EditorState
 {
     NoteStore* store;
     NoteDoc doc;
     UndoStack!NoteDoc undo;
+    CopyAsState copyAs;
     State!string title = State!string("");
     State!string bodyText = State!string("");
     State!string status = State!string("");
@@ -105,11 +108,8 @@ void copyAsHtml(ref EditorState st) @safe
 void copyAsMarkdown(ref EditorState st) @safe
 {
     syncToDoc(st);
-    auto md = toMarkdown(st.doc);
-    if (copyText(md))
-        st.status = "Copied Markdown";
-    else
-        st.status = "Clipboard copy failed";
+    openCopyAs(st.copyAs);
+    st.status = "Copy as…";
 }
 
 void saveNote(ref EditorState st) @safe
@@ -188,11 +188,19 @@ Widget buildEditor(ref EditorState st) @safe
                 st.fontSize = st.fontSize.value + 1;
         }),
         Button("Copy HTML").touchFriendly().onClick(() { copyAsHtml(st); }),
-        Button("Copy MD").touchFriendly().onClick(() { copyAsMarkdown(st); }),
+        Button("Copy as…").touchFriendly().onClick(() {
+            syncToDoc(st);
+            openCopyAs(st.copyAs);
+            st.status = "Copy as…";
+        }),
         Text(st.doc.lineEnding == LineEnding.lf ? "LF · UTF-8" : "line endings").fontSize(11),
     ).spacing(6).width(Length.percent(100));
 
-    if (st.doc.mode == NoteMode.text)
+    if (st.copyAs.sourceFormatId.value.length)
+    {
+        kids ~= buildSourceEditor(st.doc, st.copyAs, st.status);
+    }
+    else if (st.doc.mode == NoteMode.text)
     {
         kids ~= boundTextArea(st.bodyText, "Write your note…", 360)
             .background(st.doc.background)
@@ -221,7 +229,12 @@ Widget buildEditor(ref EditorState st) @safe
             .spacing(8);
         kids ~= Text("Canvas text from conversion. Diagram tools land in a later version; Undo restores text mode.")
             .fontSize(11);
+        kids ~= Text("Codebox overlay preview (50% → pop-out) is planned; formats stay first-party D modules.")
+            .fontSize(11);
     }
+
+    if (st.copyAs.open.value)
+        kids ~= buildCopyAsModal(st.doc, st.copyAs, st.status);
 
     kids ~= Text(st.status.value).fontSize(12);
 
@@ -239,7 +252,9 @@ void handleEditorShortcut(ref EditorState st, KeyEvent ev) @safe
         return;
     if (ev.ctrl && ev.shift && (ev.key == "c" || ev.key == "C"))
     {
-        copyAsMarkdown(st);
+        syncToDoc(st);
+        openCopyAs(st.copyAs);
+        st.status = "Copy as…";
         return;
     }
     if (ev.ctrl && !ev.shift && (ev.key == "c" || ev.key == "C"))

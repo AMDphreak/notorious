@@ -83,7 +83,8 @@ Widget buildRoot(ref AppSession s) @safe
             Text("Help").fontSize(20).bold(),
             Text("Catalog: search, list/grid, open notes.").fontSize(14),
             Text("Editor: Text ↔ Canvas mode; Undo reverses conversion until shapes exist.").fontSize(14),
-            Text("Ctrl+C = HTML without sticky background; Ctrl+Shift+C = Markdown.").fontSize(14),
+            Text("Ctrl+C = HTML without sticky background; Ctrl+Shift+C = Copy as… (format picker).").fontSize(14),
+            Text("Formats are first-party D modules (markdown, CentrMark, RST, AsciiDoc, HTML, RTF, plain) — no in-app extension store.").fontSize(14),
             Text("Line endings default to LF; encoding UTF-8 (code-friendly).").fontSize(14),
             Text("Report issues: https://github.com/AMDphreak/notorious/issues").fontSize(12),
             Button("Back").touchFriendly().onClick(() {
@@ -92,6 +93,23 @@ Widget buildRoot(ref AppSession s) @safe
             })
         ).spacing(8).padding(16);
     }
+}
+
+void bindEditorStates(ref DuiApp app, ref EditorState ed) @safe
+{
+    app.bind(ed.title);
+    app.bind(ed.bodyText);
+    app.bind(ed.status);
+    app.bind(ed.fontSize);
+    app.bind(ed.bold);
+    app.bind(ed.copyAs.open);
+    app.bind(ed.copyAs.lastFormat);
+    app.bind(ed.copyAs.status);
+    app.bind(ed.copyAs.sourceFormatId);
+    app.bind(ed.copyAs.sourceText);
+    app.bind(ed.copyAs.showNavigator);
+    app.bind(ed.copyAs.showPreview);
+    app.bind(ed.copyAs.compareMode);
 }
 
 void runHeadlessCatalog(ref NoteStore store) @safe
@@ -106,6 +124,7 @@ void runHeadlessCatalog(ref NoteStore store) @safe
     app.bind(session.catalog.search);
     app.bind(session.catalog.viewMode);
     app.bind(session.catalog.status);
+    bindEditorStates(app, session.editor);
 
     app.init((ref UiBuilder ui) { return buildRoot(session); }, new SoftwareBackend(960, 640));
     app.dew.resize(960, 640);
@@ -169,11 +188,7 @@ version (NotoriousWindowed)
         app.bind(session.catalog.search);
         app.bind(session.catalog.viewMode);
         app.bind(session.catalog.status);
-        app.bind(session.editor.title);
-        app.bind(session.editor.bodyText);
-        app.bind(session.editor.status);
-        app.bind(session.editor.fontSize);
-        app.bind(session.editor.bold);
+        bindEditorStates(app, session.editor);
 
         app.init((ref UiBuilder ui) { return buildRoot(session); }, gpu);
 
