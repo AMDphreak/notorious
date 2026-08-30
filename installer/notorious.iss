@@ -90,7 +90,7 @@ begin
     Result := True;
     exit;
   end;
-  { Avoid duplicating {app} on reinstall }
+  { Avoid duplicating the install dir on reinstall }
   Result := Pos(';' + Param + ';', ';' + OrigPath + ';') = 0;
 end;
 
