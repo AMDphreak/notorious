@@ -146,8 +146,6 @@ version (NotoriousWindowed)
     {
         extern (C) void* glfwGetX11Display();
         extern (C) ulong glfwGetX11Window(GLFWwindow* window);
-        extern (C) void* glfwGetWaylandDisplay();
-        extern (C) void* glfwGetWaylandWindow(GLFWwindow* window);
     }
 
     bool attachVelloBackend(VelloRenderBackend gpu, GLFWwindow* window, uint w, uint h) @trusted
@@ -161,14 +159,7 @@ version (NotoriousWindowed)
         }
         else version (linux)
         {
-            auto wlDisp = glfwGetWaylandDisplay();
-            auto wlSurf = glfwGetWaylandWindow(window);
-            if (wlDisp !is null && wlSurf !is null)
-            {
-                gpu.attachWayland(wlDisp, wlSurf, w, h);
-                if (gpu.attached)
-                    return true;
-            }
+            // glfw-d default config is X11; Wayland symbols are not linked.
             auto xDisp = glfwGetX11Display();
             auto xWin = glfwGetX11Window(window);
             if (xDisp !is null && xWin != 0)

@@ -59,7 +59,17 @@ jobs:
         shell: bash
         run: echo "${GITHUB_REF_NAME#v}" > VERSION
       - name: Build release binary
-        run: dub build -c windowed --compiler=ldc2 --build=release
+        shell: bash
+        run: |
+          set -euo pipefail
+          BRIDGE_DIR="../../dlang-supplemental/vello-d/vello_bridge/target/release"
+          # Ensure cargo preBuild ran via dub; list bridge artifacts for link diagnosis.
+          dub build -c windowed --compiler=ldc2 --build=release || {
+            echo "::error::windowed build failed; bridge dir:"
+            ls -la "$BRIDGE_DIR" || true
+            exit 1
+          }
+          ls -la "$BRIDGE_DIR" | head -40
       - name: Stage slice
         shell: bash
         run: |
