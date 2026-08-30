@@ -2,8 +2,8 @@
 ; Build: iscc installer/notorious.iss
 ; Expects notorious.exe in repo root (dub build -c windowed).
 ;
-; Launch names (same binary, four filenames + App Paths + optional PATH):
-;   note, noto, notor, notorious
+; Launch names (same binary, three filenames + App Paths + optional PATH):
+;   note (primary), noto (if note conflicts), notorious (full product)
 ; Win+R uses App Paths; terminals/scripts need PATH (or full path to a shim).
 
 #define MyAppName "Notorious"
@@ -38,7 +38,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "apopaths"; Description: "Register Win+R aliases (note, noto, notor, notorious)"; GroupDescription: "Launch shortcuts:"; Flags: checkedonce
+Name: "apopaths"; Description: "Register Win+R aliases (note, noto, notorious)"; GroupDescription: "Launch shortcuts:"; Flags: checkedonce
 Name: "addpath"; Description: "Add install folder to user PATH (for terminals / CLI)"; GroupDescription: "Launch shortcuts:"; Flags: checkedonce
 
 [Files]
@@ -46,7 +46,6 @@ Name: "addpath"; Description: "Add install folder to user PATH (for terminals / 
 Source: "..\notorious.exe"; DestDir: "{app}"; DestName: "notorious.exe"; Flags: ignoreversion
 Source: "..\notorious.exe"; DestDir: "{app}"; DestName: "note.exe"; Flags: ignoreversion
 Source: "..\notorious.exe"; DestDir: "{app}"; DestName: "noto.exe"; Flags: ignoreversion
-Source: "..\notorious.exe"; DestDir: "{app}"; DestName: "notor.exe"; Flags: ignoreversion
 Source: "..\assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.adoc"; DestDir: "{app}"; Flags: ignoreversion
@@ -62,8 +61,6 @@ Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\note.ex
 Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\note.exe"; ValueType: string; ValueName: "Path"; ValueData: "{app}"; Tasks: apopaths
 Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\noto.exe"; ValueType: string; ValueData: "{app}\noto.exe"; Flags: uninsdeletekey; Tasks: apopaths
 Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\noto.exe"; ValueType: string; ValueName: "Path"; ValueData: "{app}"; Tasks: apopaths
-Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\notor.exe"; ValueType: string; ValueData: "{app}\notor.exe"; Flags: uninsdeletekey; Tasks: apopaths
-Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\notor.exe"; ValueType: string; ValueName: "Path"; ValueData: "{app}"; Tasks: apopaths
 Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\notorious.exe"; ValueType: string; ValueData: "{app}\{#MyAppExeName}"; Flags: uninsdeletekey; Tasks: apopaths
 Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\notorious.exe"; ValueType: string; ValueName: "Path"; ValueData: "{app}"; Tasks: apopaths
 

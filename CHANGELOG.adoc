@@ -1,8 +1,12 @@
 = changelog
 
-== 2026-08-30 - CLI PATH shims (note / noto / notor / notorious)
+== 2026-08-30 - Drop notor launch alias
 
-* Installer installs four same-bytes shims, App Paths for Win+R, and an optional user-PATH entry so terminals can run `note` / `noto` / `notor` / `notorious`.
+* Launch set is now `note` (primary), `noto` (when `note` conflicts), and `notorious`. Removed the `notor` shim / App Paths entry.
+
+== 2026-08-30 - CLI PATH shims (note / noto / notorious)
+
+* Installer installs same-bytes shims, App Paths for Win+R, and an optional user-PATH entry so terminals can run `note` / `noto` / `notorious`.
 * Details: link:changelog-details/2026-08-30 - cli-path-shims.adoc[2026-08-30 - CLI PATH shims]
 
 == 2026-08-30 - Copy as… format registry
