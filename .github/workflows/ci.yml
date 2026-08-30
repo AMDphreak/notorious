@@ -38,6 +38,8 @@ jobs:
       - uses: dlang-community/setup-dlang@v1
         with:
           compiler: ldc-latest
+      # Needed for -c windowed (vello-d cargo preBuild).
+      - uses: dtolnay/rust-toolchain@stable
       - name: Test
         run: dub test -c unittest --compiler=ldc2
       - name: Build headless
@@ -45,3 +47,5 @@ jobs:
       - name: Smoke
         shell: bash
         run: ./notorious --version || ./notorious.exe --version
+      - name: Build windowed
+        run: dub build -c windowed --compiler=ldc2 --build=release

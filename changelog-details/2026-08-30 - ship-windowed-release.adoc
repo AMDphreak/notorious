@@ -1,0 +1,18 @@
+= 2026-08-30 - Ship windowed release
+
+== Summary
+
+Notorious 0.1.0 GitHub Release assets were built with DUB configuration `application` (`DewHeadless`). That configuration exists for CI: one in-memory SoftwareBackend frame and a console line such as `headless OK`. It is not the product UI.
+
+Installing that build and launching from Start Menu or Explorer allocated a console, printed the headless OK line, and exited — a flash of terminal windows and no GLFW/Vello window.
+
+== Changes
+
+* Release workflow builds `-c windowed` and installs a stable Rust toolchain so `vello-d`'s cargo `preBuild` can link the GPU bridge.
+* CI keeps the headless build + `--version` smoke and adds a windowed compile step so link failures fail on PR, not only on tag.
+* Windowed Windows binaries use linker `/SUBSYSTEM:WINDOWS` so a healthy GUI launch does not open a console.
+* Product version stamped to **0.1.1**.
+
+== Reader note
+
+Upgrade from 0.1.0 by installing the 0.1.1 setup executable (or portable zip) from the GitHub Release. 0.1.0 assets remain historical and should not be used as a desktop app.

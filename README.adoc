@@ -48,11 +48,11 @@ Defaults favor code-friendly files: UTF-8 and LF line endings.
 [source,bash]
 ----
 # Co-dev: sibling checkouts of dlang-supplemental/dew and dui
-dub build -c application --compiler=ldc2   # headless / SoftwareBackend smoke
-dub build -c windowed --compiler=ldc2      # GLFW + Vello UI (Windows/Linux)
+dub build -c application --compiler=ldc2   # headless / SoftwareBackend CI check
+dub build -c windowed --compiler=ldc2      # GLFW + Vello UI (what releases ship)
 ----
 
-Windows installer: see [`installer/notorious.iss`](installer/notorious.iss) (Inno Setup). Tagged releases publish `Notorious-*-windows-*-setup.exe` as a top-level asset alongside the portable zips.
+Windows installer: see [`installer/notorious.iss`](installer/notorious.iss) (Inno Setup). Tagged releases publish `Notorious-*-windows-*-setup.exe` as a top-level asset alongside the portable zips. Releases build `-c windowed` (not the headless CI config).
 
 * **Product name:** Notorious (Start Menu / title bar).
 * **Commands:** `note` (primary), `noto` (fallback if `note` is taken), `notorious` — same app. Installer drops three `.exe` shims, registers **App Paths** (Win+R), and can append the install folder to **user PATH** (terminals / scripts). Open a new shell after install so PATH refreshes.

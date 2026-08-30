@@ -8,7 +8,7 @@
 
 #define MyAppName "Notorious"
 #ifndef MyAppVersion
-  #define MyAppVersion "0.1.0"
+  #define MyAppVersion "0.1.1"
 #endif
 #ifndef MyArch
   #define MyArch "windows-x64"

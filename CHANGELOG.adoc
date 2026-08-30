@@ -1,5 +1,11 @@
 = changelog
 
+== 2026-08-30 - Ship windowed UI in releases (0.1.1)
+
+* v0.1.0 installers accidentally shipped the headless CI binary (`-c application`): console flash, one SoftwareBackend frame, no GLFW UI.
+* Releases now build `-c windowed` (Rust toolchain for vello-d), and CI compiles windowed on every push. Windows GUI subsystem avoids a console on launch.
+* Details: link:changelog-details/2026-08-30 - ship-windowed-release.adoc[2026-08-30 - Ship windowed release]
+
 == 2026-08-30 - Release installers as top-level assets
 
 * Inno Setup still built for v0.1.0, but the pack step nested `*-setup.exe` inside the Windows zip. Releases now publish setup executables next to the portable archives (arch in the filename).

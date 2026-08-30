@@ -44,11 +44,13 @@ jobs:
       - uses: dlang-community/setup-dlang@v1
         with:
           compiler: ldc-latest
+      # vello-d preBuild runs cargo build --release for the GPU bridge.
+      - uses: dtolnay/rust-toolchain@stable
       - name: Stamp version from tag
         shell: bash
         run: echo "${GITHUB_REF_NAME#v}" > VERSION
       - name: Build release binary
-        run: dub build -c application --compiler=ldc2 --build=release
+        run: dub build -c windowed --compiler=ldc2 --build=release
       - name: Stage slice
         shell: bash
         run: |

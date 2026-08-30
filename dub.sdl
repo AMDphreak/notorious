@@ -3,7 +3,7 @@ description "Cross-platform sticky notes + notepad hybrid (D + dui/dew)"
 authors "amdphreak"
 copyright "Copyright © 2026, AMDphreak"
 license "BSL-1.0"
-version "0.1.0"
+version "0.1.1"
 
 dependency "dui" path="../../dlang-supplemental/dui"
 dependency "dew" path="../../dlang-supplemental/dew"
@@ -28,6 +28,10 @@ configuration "windowed" {
 	versions "NotoriousWindowed"
 	subConfiguration "dew" "gpu"
 	dependency "glfw-d" version="~>1.1.2"
+	# GUI launch must not allocate a console (headless/unittest stay CUI).
+	platform "windows" {
+		lflags "/SUBSYSTEM:WINDOWS"
+	}
 }
 
 configuration "unittest" {
