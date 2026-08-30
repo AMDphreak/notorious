@@ -62,5 +62,11 @@ jobs:
           set -euo pipefail
           BRIDGE_ROOT="../../dlang-supplemental/vello-d/vello_bridge"
           cargo build --release --manifest-path "$BRIDGE_ROOT/Cargo.toml"
-          export VELLO_BRIDGE_DIR="$(cd "$BRIDGE_ROOT/target/release" && pwd)"
+          if [[ "${RUNNER_OS}" == "Windows" ]]; then
+            export VELLO_BRIDGE_DIR="$(cd "$BRIDGE_ROOT/target/release" && pwd -W)"
+            export DFLAGS="-L=${VELLO_BRIDGE_DIR}/vello_bridge.lib"
+          else
+            export VELLO_BRIDGE_DIR="$(cd "$BRIDGE_ROOT/target/release" && pwd)"
+            export DFLAGS="-L=${VELLO_BRIDGE_DIR}/libvello_bridge.a"
+          fi
           dub build -c windowed --compiler=ldc2 --build=release

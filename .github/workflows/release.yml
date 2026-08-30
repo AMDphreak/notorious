@@ -64,10 +64,20 @@ jobs:
           set -euo pipefail
           BRIDGE_ROOT="../../dlang-supplemental/vello-d/vello_bridge"
           cargo build --release --manifest-path "$BRIDGE_ROOT/Cargo.toml"
-          # Absolute dir for DUB libs+/LIBPATH (must not be relative to dub cache cwd).
-          export VELLO_BRIDGE_DIR="$(cd "$BRIDGE_ROOT/target/release" && pwd)"
+          # Native absolute path (MSVC rejects Git Bash /d/... paths).
+          if [[ "${RUNNER_OS}" == "Windows" ]]; then
+            VELLO_BRIDGE_DIR="$(cd "$BRIDGE_ROOT/target/release" && pwd -W)"
+            export VELLO_BRIDGE_DIR
+            # LDC: -L=<arg> is passed through to the linker as an input/flag.
+            export DFLAGS="-L=${VELLO_BRIDGE_DIR}/vello_bridge.lib"
+          else
+            VELLO_BRIDGE_DIR="$(cd "$BRIDGE_ROOT/target/release" && pwd)"
+            export VELLO_BRIDGE_DIR
+            export DFLAGS="-L=${VELLO_BRIDGE_DIR}/libvello_bridge.a"
+          fi
           echo "VELLO_BRIDGE_DIR=$VELLO_BRIDGE_DIR" >> "$GITHUB_ENV"
           echo "VELLO_BRIDGE_DIR=$VELLO_BRIDGE_DIR"
+          echo "DFLAGS=$DFLAGS"
           ls -la "$VELLO_BRIDGE_DIR" | head -20
           dub build -c windowed --compiler=ldc2 --build=release
       - name: Stage slice
