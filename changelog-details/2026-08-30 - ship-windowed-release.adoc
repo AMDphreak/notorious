@@ -13,7 +13,7 @@ Installing that build and launching from Start Menu or Explorer allocated a cons
 * Windowed Windows binaries use linker `/SUBSYSTEM:WINDOWS` so a healthy GUI launch does not open a console.
 * dui no longer sets `versions "DewHeadless"` (DUB applied that to the root and selected dew's stub `VelloRenderBackend` even with `subConfiguration "dew" "gpu"`). dew's headless stub gained an `attached` property for API parity.
 * Host attach covers Windows HWND and Linux X11/Wayland (same approach as dew `examples/vello-window`).
-* macOS arm64 remains in the matrix with `continue-on-error` until vello-d Metal + glfw-d Cocoa work; win/lin still publish.
+* macOS arm64 and Windows arm64 remain in the matrix with `continue-on-error` until vello-d Metal / ARM link are solid; win-x64 + linux x64/arm64 still publish.
 * Product version stamped to **0.1.1**.
 
 == Reader note
