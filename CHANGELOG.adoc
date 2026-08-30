@@ -1,5 +1,11 @@
 = changelog
 
+== 2026-08-29 - Win+R aliases (noto / notor / notorious)
+
+* Installer registers App Paths for `noto`, `notor`, and `notorious` (optional task, on by default) so Win+R launches the app without PATH changes.
+* Details: link:changelog-details/2026-08-29 - winr-app-paths.adoc[2026-08-29 - Win+R aliases]
+
+
 == 2026-08-29 - Release target pattern desktop/2026
 
 * Release matrix includes `windows-arm64` and `linux-arm64` (house `desktop` pattern) alongside existing x64 + macOS arm64.

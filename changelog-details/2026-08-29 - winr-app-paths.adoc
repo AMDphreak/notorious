@@ -1,0 +1,11 @@
+= 2026-08-29 - Win+R aliases
+
+== Summary
+
+Install-time App Paths registration so Win+R can launch Notorious as `noto` or `notorious`.
+
+== Details
+
+* Microsoft recommends `HKLM\…\App Paths\<alias>.exe` over mutating PATH.
+* Each alias is its own key; `(Default)` is the full path to `notorious.exe`.
+* Uninstall removes the keys (`uninsdeletekey`).
