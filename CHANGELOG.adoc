@@ -1,5 +1,10 @@
 = changelog
 
+== 2026-08-30 - CLI PATH shims (note / noto / notor / notorious)
+
+* Installer installs four same-bytes shims, App Paths for Win+R, and an optional user-PATH entry so terminals can run `note` / `noto` / `notor` / `notorious`.
+* Details: link:changelog-details/2026-08-30 - cli-path-shims.adoc[2026-08-30 - CLI PATH shims]
+
 == 2026-08-30 - Copy as… format registry
 
 * Ctrl+Shift+C / **Copy as…** opens a format picker (plain, Markdown, CentrMark, RST, AsciiDoc, HTML, RTF).

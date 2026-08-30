@@ -1,0 +1,12 @@
+= 2026-08-30 - CLI PATH shims
+
+== Summary
+
+Win+R alone is not enough for terminals — add install-dir PATH plus filename shims.
+
+== Details
+
+* Shims: `note.exe`, `noto.exe`, `notor.exe`, `notorious.exe` (copies of the same build).
+* App Paths still cover ShellExecute / Run dialog.
+* User PATH append (task, default on) with cleanup on uninstall; `ChangesEnvironment=yes`.
+* Display name stays **Notorious**; `note` is the short CLI/Run name. **Noter** left unclaimed.

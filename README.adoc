@@ -52,9 +52,10 @@ dub build -c application --compiler=ldc2   # headless / SoftwareBackend smoke
 dub build -c windowed --compiler=ldc2      # GLFW + Vello UI (Windows/Linux)
 ----
 
-Windows installer: see [`installer/notorious.iss`](installer/notorious.iss) (Inno Setup). The Start Menu shortcut is named **Notorious** so Start search for “note” finds it.
+Windows installer: see [`installer/notorious.iss`](installer/notorious.iss) (Inno Setup).
 
-Win+R (Run) aliases use the shell **App Paths** registry (not PATH). After install, `Win+R` → `noto`, `notor`, or `notorious` launches the app. Multiple aliases are separate `App Paths\*.exe` keys that all point at `notorious.exe`.
+* **Product name:** Notorious (Start Menu / title bar).
+* **Commands:** `note`, `noto`, `notor`, `notorious` — same app. Installer drops four `.exe` shims, registers **App Paths** (Win+R), and can append the install folder to **user PATH** (terminals / scripts). Open a new shell after install so PATH refreshes.
 
 == Changelog
 

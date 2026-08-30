@@ -2,7 +2,7 @@
 
 == Summary
 
-Install-time App Paths registration so Win+R can launch Notorious as `noto`, `notor`, or `notorious`.
+Install-time App Paths registration so Win+R can launch Notorious as `note`, `noto`, `notor`, or `notorious`.
 
 == Details
 
