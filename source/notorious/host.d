@@ -142,6 +142,45 @@ version (NotoriousWindowed)
         import core.sys.windows.windows;
         extern (C) HWND glfwGetWin32Window(GLFWwindow* window);
     }
+    else version (linux)
+    {
+        extern (C) void* glfwGetX11Display();
+        extern (C) ulong glfwGetX11Window(GLFWwindow* window);
+        extern (C) void* glfwGetWaylandDisplay();
+        extern (C) void* glfwGetWaylandWindow(GLFWwindow* window);
+    }
+
+    bool attachVelloBackend(VelloRenderBackend gpu, GLFWwindow* window, uint w, uint h) @trusted
+    {
+        version (Windows)
+        {
+            HWND hwnd = glfwGetWin32Window(window);
+            HINSTANCE hinstance = GetModuleHandleA(null);
+            gpu.attach(cast(void*) hwnd, cast(void*) hinstance, w, h);
+            return gpu.attached;
+        }
+        else version (linux)
+        {
+            auto wlDisp = glfwGetWaylandDisplay();
+            auto wlSurf = glfwGetWaylandWindow(window);
+            if (wlDisp !is null && wlSurf !is null)
+            {
+                gpu.attachWayland(wlDisp, wlSurf, w, h);
+                if (gpu.attached)
+                    return true;
+            }
+            auto xDisp = glfwGetX11Display();
+            auto xWin = glfwGetX11Window(window);
+            if (xDisp !is null && xWin != 0)
+            {
+                gpu.attachX11(xDisp, xWin, 0, w, h);
+                return gpu.attached;
+            }
+            return false;
+        }
+        else
+            return false;
+    }
 
     void runWindowedApp(ref NoteStore store) @trusted
     {
@@ -158,7 +197,9 @@ version (NotoriousWindowed)
             glfwTerminate();
 
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-        auto window = glfwCreateWindow(1000, 700, "Notorious", null, null);
+        enum int winW = 1000;
+        enum int winH = 700;
+        auto window = glfwCreateWindow(winW, winH, "Notorious", null, null);
         if (window is null)
         {
             stderr.writeln("glfwCreateWindow failed");
@@ -168,16 +209,9 @@ version (NotoriousWindowed)
             glfwDestroyWindow(window);
 
         auto gpu = new VelloRenderBackend();
-        version (Windows)
+        if (!attachVelloBackend(gpu, window, winW, winH))
         {
-            HWND hwnd = glfwGetWin32Window(window);
-            HINSTANCE hinstance = GetModuleHandleA(null);
-            gpu.attach(cast(void*) hwnd, cast(void*) hinstance, 1000, 700);
-        }
-        if (!gpu.attached)
-        {
-            stderr.writeln("Vello attach failed — falling back to headless smoke");
-            runHeadlessCatalog(store);
+            stderr.writeln("Vello attach failed (GPU surface unavailable on this platform).");
             return;
         }
         scope (exit)

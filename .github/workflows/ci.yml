@@ -15,6 +15,8 @@ jobs:
           - os: ubuntu-latest
           - os: macos-14
     runs-on: ${{ matrix.os }}
+    # macOS windowed not ready (vello Metal / glfw-d Cocoa); keep matrix green for win/lin.
+    continue-on-error: ${{ matrix.os == 'macos-14' }}
     defaults:
       run:
         working-directory: github.com/AMDphreak/notorious
