@@ -7,7 +7,15 @@
 ; Win+R uses App Paths; terminals/scripts need PATH (or full path to a shim).
 
 #define MyAppName "Notorious"
-#define MyAppVersion "0.1.0"
+#ifndef MyAppVersion
+  #define MyAppVersion "0.1.0"
+#endif
+#ifndef MyArch
+  #define MyArch "windows-x64"
+#endif
+#ifndef MyArchAllowed
+  #define MyArchAllowed "x64compatible"
+#endif
 #define MyAppPublisher "AMDphreak"
 #define MyAppURL "https://github.com/AMDphreak/notorious"
 #define MyAppExeName "notorious.exe"
@@ -24,11 +32,13 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 LicenseFile=..\LICENSE
 OutputDir=..\dist
-OutputBaseFilename=Notorious-{#MyAppVersion}-setup
+; Architecture in the filename so x64/arm64 do not collide on the release page.
+OutputBaseFilename=Notorious-{#MyAppVersion}-{#MyArch}-setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-ArchitecturesInstallIn64BitMode=x64compatible
+ArchitecturesAllowed={#MyArchAllowed}
+ArchitecturesInstallIn64BitMode={#MyArchAllowed}
 UninstallDisplayIcon={app}\{#MyAppExeName}
 ; Needed so new PATH is visible after install without a reboot dance.
 ChangesEnvironment=yes

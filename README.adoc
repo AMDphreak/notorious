@@ -52,7 +52,7 @@ dub build -c application --compiler=ldc2   # headless / SoftwareBackend smoke
 dub build -c windowed --compiler=ldc2      # GLFW + Vello UI (Windows/Linux)
 ----
 
-Windows installer: see [`installer/notorious.iss`](installer/notorious.iss) (Inno Setup).
+Windows installer: see [`installer/notorious.iss`](installer/notorious.iss) (Inno Setup). Tagged releases publish `Notorious-*-windows-*-setup.exe` as a top-level asset alongside the portable zips.
 
 * **Product name:** Notorious (Start Menu / title bar).
 * **Commands:** `note` (primary), `noto` (fallback if `note` is taken), `notorious` — same app. Installer drops three `.exe` shims, registers **App Paths** (Win+R), and can append the install folder to **user PATH** (terminals / scripts). Open a new shell after install so PATH refreshes.

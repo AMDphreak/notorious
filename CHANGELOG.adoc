@@ -1,5 +1,10 @@
 = changelog
 
+== 2026-08-30 - Release installers as top-level assets
+
+* Inno Setup still built for v0.1.0, but the pack step nested `*-setup.exe` inside the Windows zip. Releases now publish setup executables next to the portable archives (arch in the filename).
+* Details: link:changelog-details/2026-08-30 - release-installer-assets.adoc[2026-08-30 - Release installer assets]
+
 == 2026-08-30 - Plain / Doc / Canvas + OCIF direction
 
 * Mode strip target: **Plain | Doc | Canvas**. Doc = CentrMark; Canvas = OCIF (SVG export). No bottom status bar — mode subbars. See [`AGENTS.md`](AGENTS.md).

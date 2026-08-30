@@ -1,0 +1,16 @@
+= 2026-08-30 - Release installer assets
+
+== Summary
+
+GitHub Releases for Notorious showed only portable `.zip` downloads even though the Windows job already compiled an Inno Setup installer. The installer was copied into the Windows artifact slice and then zipped with the binaries, so it never appeared as its own release asset.
+
+== Changes
+
+* Release workflow uploads installers as a separate artifact (`installer-<triplet>`).
+* Pack step copies `*-setup.exe` into `release-files/` before zipping portable slices.
+* Release fails if Windows artifacts exist but no setup executable was promoted.
+* Inno script takes `/DMyAppVersion`, `/DMyArch`, and `/DMyArchAllowed` so x64 and arm64 setups do not share one filename.
+
+== Reader note
+
+Existing v0.1.0 assets may still list only zips until a patched setup is attached or a newer tag is cut. Future tags publish the installer beside the archives.

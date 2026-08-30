@@ -67,15 +67,27 @@ jobs:
         shell: pwsh
         run: |
           choco install innosetup -y --no-progress
-          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" installer\notorious.iss
-          if (Test-Path dist) {
-            New-Item -ItemType Directory -Force -Path "out\${{ matrix.triplet }}" | Out-Null
-            Copy-Item dist\* "out\${{ matrix.triplet }}\"
+          $ver = (Get-Content VERSION -Raw).Trim()
+          $archAllowed = if ('${{ matrix.triplet }}' -eq 'windows-arm64') { 'arm64' } else { 'x64compatible' }
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" `
+            "/DMyAppVersion=$ver" `
+            "/DMyArch=${{ matrix.triplet }}" `
+            "/DMyArchAllowed=$archAllowed" `
+            installer\notorious.iss
+          if (-not (Test-Path dist\*-setup.exe)) {
+            throw "Inno Setup produced no *-setup.exe under dist/"
           }
+          New-Item -ItemType Directory -Force -Path "out\installers" | Out-Null
+          Copy-Item dist\*-setup.exe "out\installers\"
       - uses: actions/upload-artifact@v4
         with:
           name: notorious-${{ matrix.triplet }}
           path: github.com/AMDphreak/notorious/out/${{ matrix.triplet }}/**
+      - uses: actions/upload-artifact@v4
+        if: runner.os == 'Windows'
+        with:
+          name: installer-${{ matrix.triplet }}
+          path: github.com/AMDphreak/notorious/out/installers/*
 
   release:
     needs: build
@@ -87,16 +99,28 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           path: artifacts
-      - name: Pack archives
+      - name: Pack archives and promote installers
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p release-files
+          # First-class installer assets (not nested inside portable zips).
+          shopt -s nullglob
+          for setup in artifacts/installer-*/*-setup.exe; do
+            cp -v "$setup" release-files/
+          done
           for d in artifacts/notorious-*; do
             trip=${d##*notorious-}
             (cd "$d" && zip -r "../../release-files/notorious-${trip}.zip" .)
           done
           ls -la release-files
+          # Fail the release if Windows built but no setup.exe was promoted.
+          if compgen -G 'artifacts/notorious-windows-*' > /dev/null; then
+            if ! compgen -G 'release-files/*-setup.exe' > /dev/null; then
+              echo "::error::Windows artifacts present but no *-setup.exe in release-files"
+              exit 1
+            fi
+          fi
       - uses: softprops/action-gh-release@v2
         with:
           files: release-files/*
