@@ -42,6 +42,13 @@ jobs:
           compiler: ldc-latest
       # Needed for -c windowed (vello-d cargo preBuild).
       - uses: dtolnay/rust-toolchain@stable
+      - name: Linux window system deps (GLFW)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libx11-dev libxi-dev libxcursor-dev libxrandr-dev libxinerama-dev \
+            libxkbcommon-dev libwayland-dev libgl1-mesa-dev
       - name: Test
         run: dub test -c unittest --compiler=ldc2
       - name: Build headless

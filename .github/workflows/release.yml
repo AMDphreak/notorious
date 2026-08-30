@@ -48,6 +48,13 @@ jobs:
           compiler: ldc-latest
       # vello-d preBuild runs cargo build --release for the GPU bridge.
       - uses: dtolnay/rust-toolchain@stable
+      - name: Linux window system deps (GLFW)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libx11-dev libxi-dev libxcursor-dev libxrandr-dev libxinerama-dev \
+            libxkbcommon-dev libwayland-dev libgl1-mesa-dev
       - name: Stamp version from tag
         shell: bash
         run: echo "${GITHUB_REF_NAME#v}" > VERSION
