@@ -64,7 +64,7 @@ jobs:
           cargo build --release --manifest-path "$BRIDGE_ROOT/Cargo.toml"
           if [[ "${RUNNER_OS}" == "Windows" ]]; then
             export VELLO_BRIDGE_DIR="$(cd "$BRIDGE_ROOT/target/release" && pwd -W)"
-            export DFLAGS="-L=${VELLO_BRIDGE_DIR}/vello_bridge.lib"
+            export DFLAGS="-L=${VELLO_BRIDGE_DIR}/vello_bridge.dll.lib"
           else
             export VELLO_BRIDGE_DIR="$(cd "$BRIDGE_ROOT/target/release" && pwd)"
             export DFLAGS="-L=${VELLO_BRIDGE_DIR}/libvello_bridge.a"
