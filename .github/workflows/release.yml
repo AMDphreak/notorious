@@ -22,8 +22,8 @@ jobs:
           - os: macos-14
             triplet: macos-arm64
     runs-on: ${{ matrix.os }}
-    # macOS windowed needs vello-d Metal + a working glfw-d Cocoa slice; do not block win/lin ship.
-    continue-on-error: ${{ matrix.triplet == 'macos-arm64' }}
+    # macOS / Windows ARM may fail (Metal TBD / runner quirks); still publish successful slices.
+    continue-on-error: ${{ matrix.triplet == 'macos-arm64' || matrix.triplet == 'windows-arm64' }}
     defaults:
       run:
         working-directory: github.com/AMDphreak/notorious

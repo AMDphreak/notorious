@@ -115,9 +115,7 @@ begin
   else
     Path := Path + ';' + AppDir;
   RegWriteExpandStringValue(HKEY_CURRENT_USER, 'Environment', 'Path', Path);
-  { Broadcast so new shells see PATH without logoff }
-  SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0,
-    LPARAM(PChar('Environment')), SMTO_ABORTIFHUNG, 5000, DWORD(nil^));
+  { ChangesEnvironment=yes already broadcasts WM_SETTINGCHANGE }
 end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
@@ -142,6 +140,4 @@ begin
   while (Length(Path) > 0) and (Path[Length(Path)] = ';') do
     Delete(Path, Length(Path), 1);
   RegWriteExpandStringValue(HKEY_CURRENT_USER, 'Environment', 'Path', Path);
-  SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, 0,
-    LPARAM(PChar('Environment')), SMTO_ABORTIFHUNG, 5000, DWORD(nil^));
 end;
