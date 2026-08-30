@@ -56,6 +56,8 @@ Name: "addpath"; Description: "Add install folder to user PATH (for terminals / 
 Source: "..\notorious.exe"; DestDir: "{app}"; DestName: "notorious.exe"; Flags: ignoreversion
 Source: "..\notorious.exe"; DestDir: "{app}"; DestName: "note.exe"; Flags: ignoreversion
 Source: "..\notorious.exe"; DestDir: "{app}"; DestName: "noto.exe"; Flags: ignoreversion
+; Present when the Windows build links the vello_bridge cdylib/import lib.
+Source: "..\vello_bridge.dll"; DestDir: "{app}"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "..\assets\*"; DestDir: "{app}\assets"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\README.adoc"; DestDir: "{app}"; Flags: ignoreversion

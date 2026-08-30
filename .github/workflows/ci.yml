@@ -57,4 +57,10 @@ jobs:
         shell: bash
         run: ./notorious --version || ./notorious.exe --version
       - name: Build windowed
-        run: dub build -c windowed --compiler=ldc2 --build=release
+        shell: bash
+        run: |
+          set -euo pipefail
+          BRIDGE_ROOT="../../dlang-supplemental/vello-d/vello_bridge"
+          cargo build --release --manifest-path "$BRIDGE_ROOT/Cargo.toml"
+          export VELLO_BRIDGE_DIR="$(cd "$BRIDGE_ROOT/target/release" && pwd)"
+          dub build -c windowed --compiler=ldc2 --build=release

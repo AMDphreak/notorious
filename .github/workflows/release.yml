@@ -62,14 +62,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          BRIDGE_DIR="../../dlang-supplemental/vello-d/vello_bridge/target/release"
-          # Ensure cargo preBuild ran via dub; list bridge artifacts for link diagnosis.
-          dub build -c windowed --compiler=ldc2 --build=release || {
-            echo "::error::windowed build failed; bridge dir:"
-            ls -la "$BRIDGE_DIR" || true
-            exit 1
-          }
-          ls -la "$BRIDGE_DIR" | head -40
+          BRIDGE_ROOT="../../dlang-supplemental/vello-d/vello_bridge"
+          cargo build --release --manifest-path "$BRIDGE_ROOT/Cargo.toml"
+          # Absolute dir for DUB libs+/LIBPATH (must not be relative to dub cache cwd).
+          export VELLO_BRIDGE_DIR="$(cd "$BRIDGE_ROOT/target/release" && pwd)"
+          echo "VELLO_BRIDGE_DIR=$VELLO_BRIDGE_DIR" >> "$GITHUB_ENV"
+          echo "VELLO_BRIDGE_DIR=$VELLO_BRIDGE_DIR"
+          ls -la "$VELLO_BRIDGE_DIR" | head -20
+          dub build -c windowed --compiler=ldc2 --build=release
       - name: Stage slice
         shell: bash
         run: |
@@ -77,6 +77,12 @@ jobs:
           if [ -f notorious.exe ]; then
             cp notorious.exe "out/${{ matrix.triplet }}/notorious.exe"
             cp notorious.exe "out/${{ matrix.triplet }}/app.exe"
+            # Ship bridge DLL if the link used the import lib / cdylib.
+            if [ -f "${VELLO_BRIDGE_DIR:-}/vello_bridge.dll" ]; then
+              cp "${VELLO_BRIDGE_DIR}/vello_bridge.dll" "out/${{ matrix.triplet }}/"
+            elif [ -f ../../dlang-supplemental/vello-d/vello_bridge/target/release/vello_bridge.dll ]; then
+              cp ../../dlang-supplemental/vello-d/vello_bridge/target/release/vello_bridge.dll "out/${{ matrix.triplet }}/"
+            fi
           else
             cp notorious "out/${{ matrix.triplet }}/notorious"
             cp notorious "out/${{ matrix.triplet }}/app"
@@ -90,6 +96,11 @@ jobs:
           choco install innosetup -y --no-progress
           $ver = (Get-Content VERSION -Raw).Trim()
           $archAllowed = if ('${{ matrix.triplet }}' -eq 'windows-arm64') { 'arm64' } else { 'x64compatible' }
+          $dll = Join-Path $env:VELLO_BRIDGE_DIR 'vello_bridge.dll'
+          if (-not (Test-Path $dll)) {
+            $dll = '..\..\dlang-supplemental\vello-d\vello_bridge\target\release\vello_bridge.dll'
+          }
+          if (Test-Path $dll) { Copy-Item $dll . -Force }
           & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" `
             "/DMyAppVersion=$ver" `
             "/DMyArch=${{ matrix.triplet }}" `
