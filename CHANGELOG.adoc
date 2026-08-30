@@ -1,5 +1,9 @@
 = changelog
 
+== 2026-08-30 - Plain / Doc / Canvas + OCIF direction
+
+* Mode strip target: **Plain | Doc | Canvas**. Doc = CentrMark; Canvas = OCIF (SVG export). No bottom status bar — mode subbars. See [`AGENTS.md`](AGENTS.md).
+
 == 2026-08-30 - Drop notor launch alias
 
 * Launch set is now `note` (primary), `noto` (when `note` conflicts), and `notorious`. Removed the `notor` shim / App Paths entry.
