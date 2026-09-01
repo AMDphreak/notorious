@@ -15,8 +15,6 @@ jobs:
           - os: ubuntu-latest
           - os: macos-14
     runs-on: ${{ matrix.os }}
-    # macOS windowed not ready (vello Metal / glfw-d Cocoa); keep matrix green for win/lin.
-    continue-on-error: ${{ matrix.os == 'macos-14' }}
     defaults:
       run:
         working-directory: github.com/AMDphreak/notorious
@@ -37,6 +35,10 @@ jobs:
         with:
           repository: dlang-supplemental/vello-d
           path: github.com/dlang-supplemental/vello-d
+      - uses: actions/checkout@v4
+        with:
+          repository: AMDphreak/glfw-d
+          path: github.com/dlang-supplemental/glfw-d
       - uses: dlang-community/setup-dlang@v1
         with:
           compiler: ldc-latest

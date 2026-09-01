@@ -5,7 +5,7 @@
 * v0.1.0 installers accidentally shipped the headless CI binary (`-c application`): console flash, one SoftwareBackend frame, no GLFW UI.
 * Releases now build `-c windowed` (Rust toolchain for vello-d), and CI compiles windowed on every push. Windows GUI subsystem avoids a console on launch.
 * Fixed dew/dui version bleed: dui no longer defines `DewHeadless` (that forced Vello stubs while compiling the host). Linux uses X11/Wayland attach like dew's vello-window demo.
-* macOS arm64 slice is `continue-on-error` until vello-d Metal + glfw-d Cocoa build cleanly; Windows/Linux desktop/2026 still ship.
+* macOS windowed build uses forked glfw-d with Cocoa/NSGL support (vendored GLFW 3.3 ObjC + D glue); CI no longer soft-fails macOS.
 * Details: link:changelog-details/2026-08-30 - ship-windowed-release.adoc[2026-08-30 - Ship windowed release]
 
 == 2026-08-30 - Release installers as top-level assets
