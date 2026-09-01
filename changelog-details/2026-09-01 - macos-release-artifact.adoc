@@ -1,0 +1,15 @@
+= 2026-09-01 - macOS release artifact
+
+== Summary
+
+Notorious 0.1.1 GitHub Release assets omitted macOS. CI on `main` was fixed the same day (glfw-d fork with Cocoa/NSGL, zero-init and link fixes), but no tag was cut after those commits, so the Release workflow never rebuilt with a working macOS slice.
+
+== Changes
+
+* Release workflow checks out `dlang-supplemental/glfw-d` alongside dew, dui, and vello-d (matching CI).
+* macOS arm64 is no longer `continue-on-error` in the release matrix; a failed Mac build blocks the release instead of shipping a partial matrix silently.
+* Product version stamped to **0.1.2** so the Release workflow runs again and publishes `notorious-macos-arm64.zip`.
+
+== Reader note
+
+If you need the desktop app on Apple Silicon, install from the **0.1.2** (or later) GitHub Release. 0.1.1 remains valid on Windows and Linux only.

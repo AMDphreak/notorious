@@ -1,5 +1,11 @@
 = changelog
 
+== 2026-09-01 - macOS arm64 release artifact (0.1.2)
+
+* v0.1.1 shipped without `notorious-macos-arm64.zip`: the release workflow ran before the glfw-d Cocoa fork landed and macOS was still `continue-on-error`.
+* Release matrix now checks out `dlang-supplemental/glfw-d` and treats macOS arm64 as a required slice (Windows arm64 remains soft-fail).
+* Details: link:changelog-details/2026-09-01 - macos-release-artifact.adoc[2026-09-01 - macOS release artifact]
+
 == 2026-08-30 - Ship windowed UI in releases (0.1.1)
 
 * v0.1.0 installers accidentally shipped the headless CI binary (`-c application`): console flash, one SoftwareBackend frame, no GLFW UI.

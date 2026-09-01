@@ -3,7 +3,7 @@ description "Cross-platform sticky notes + notepad hybrid (D + dui/dew)"
 authors "amdphreak"
 copyright "Copyright © 2026, AMDphreak"
 license "BSL-1.0"
-version "0.1.1"
+version "0.1.2"
 
 dependency "dui" path="../../dlang-supplemental/dui"
 dependency "dew" path="../../dlang-supplemental/dew"
