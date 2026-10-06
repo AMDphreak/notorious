@@ -20,3 +20,5 @@
 !.devcentr/**
 !docs/
 !docs/**
+!/.editorconfig
+!/.gitattributes
