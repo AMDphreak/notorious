@@ -19,27 +19,27 @@ jobs:
       run:
         working-directory: github.com/AMDphreak/notorious
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           path: github.com/AMDphreak/notorious
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: dlang-supplemental/dew
           path: github.com/dlang-supplemental/dew
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: dlang-supplemental/dui
           path: github.com/dlang-supplemental/dui
       # dew dub.sdl path-pins vello-d for every config validation
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: dlang-supplemental/vello-d
           path: github.com/dlang-supplemental/vello-d
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: dlang-supplemental/glfw-d
           path: github.com/dlang-supplemental/glfw-d
-      - uses: dlang-community/setup-dlang@v1
+      - uses: dlang-community/setup-dlang@v2
         with:
           compiler: ldc-latest
       # Needed for -c windowed (vello-d cargo preBuild).

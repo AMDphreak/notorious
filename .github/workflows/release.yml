@@ -28,26 +28,26 @@ jobs:
       run:
         working-directory: github.com/AMDphreak/notorious
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           path: github.com/AMDphreak/notorious
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: dlang-supplemental/dew
           path: github.com/dlang-supplemental/dew
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: dlang-supplemental/dui
           path: github.com/dlang-supplemental/dui
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: dlang-supplemental/vello-d
           path: github.com/dlang-supplemental/vello-d
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: dlang-supplemental/glfw-d
           path: github.com/dlang-supplemental/glfw-d
-      - uses: dlang-community/setup-dlang@v1
+      - uses: dlang-community/setup-dlang@v2
         with:
           compiler: ldc-latest
       # vello-d preBuild runs cargo build --release for the GPU bridge.
@@ -126,11 +126,11 @@ jobs:
           }
           New-Item -ItemType Directory -Force -Path "out\installers" | Out-Null
           Copy-Item dist\*-setup.exe "out\installers\"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: notorious-${{ matrix.triplet }}
           path: github.com/AMDphreak/notorious/out/${{ matrix.triplet }}/**
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: runner.os == 'Windows'
         with:
           name: installer-${{ matrix.triplet }}
@@ -142,8 +142,8 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with:
           path: artifacts
       - name: Pack archives and promote installers
@@ -168,7 +168,7 @@ jobs:
               exit 1
             fi
           fi
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with:
           files: release-files/*
           generate_release_notes: true
