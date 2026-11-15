@@ -1,5 +1,7 @@
 ifndef::env-github[:icons: font]
-:toc: preamble
+:toc: macro
+:toc-title:
+:toclevels: 2
 
 ifdef::env-github[]
 ++++
@@ -31,6 +33,15 @@ ifndef::env-github[]
 
 Sticky notes meet Notepad on dui/dew.
 endif::[]
+
+++++
+<details>
+<summary>Table of Contents</summary>
+++++
+toc::[]
+++++
+</details>
+++++
 
 == About
 
